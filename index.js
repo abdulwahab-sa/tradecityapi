@@ -17,6 +17,7 @@ app.use(function (req, res, next) {
 	res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, Content-Length, X-Requested-With');
 	next();
 });
+
 app.use('/api', router);
 
 app.listen(process.env.PORT || 3005, () => {

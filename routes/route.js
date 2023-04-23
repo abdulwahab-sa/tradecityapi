@@ -4,7 +4,7 @@ const { getAllProducts, getProduct, createProduct, updateProduct, deleteProduct 
 const upload = require('./../middleware/multerImage');
 const { loginController, refreshController } = require('./../auth/index');
 router
-	.route('/')
+	.route('/categories')
 	.get(getAllProducts)
 	.post(
 		upload.fields([

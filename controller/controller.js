@@ -1,23 +1,15 @@
-const db = require('../models');
-const Product = db.products;
+const db = require('../config/dbConfig');
 const multer = require('multer');
 const storage = multer.memoryStorage();
 const upload = multer({ storage });
 
 const getAllProducts = async (req, res) => {
 	try {
-		const result = await Product.findAll({
-			include: {
-				all: true,
-			},
+		const q = 'SELECT * FROM category';
+		db.query(q, (err, data) => {
+			if (err) return res.json(err);
+			return res.json(data);
 		});
-
-		result.forEach((product) => {
-			product.productImg = product.productImg.toString('base64');
-			product.subCategoryImg = product.subCategoryImg.toString('base64');
-		});
-
-		return res.status(200).json(result);
 	} catch (err) {
 		res.send(err);
 	}
