@@ -62,7 +62,7 @@ const createSubcategory = async (req, res) => {
 		const values = [req.body.subcategory_title, subcategory_img, req.body.category_category_id];
 		db.query(q, values, (err, data) => {
 			if (err) return res.json(err);
-			return res.json(data, 'Subcategory has been created successfully!');
+			return res.json({ message: 'Subcategory has been created successfully!', data });
 		});
 	} catch (error) {
 		res.send(error);
