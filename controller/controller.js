@@ -59,7 +59,7 @@ const createSubcategory = async (req, res) => {
 	try {
 		const subcategory_img = req.files['subcategory_img'][0].buffer;
 		const q = 'INSERT INTO subcategory (`subcategory_title`, `subcategory_img`, `category_category_id`) VALUES (?)';
-		const values = [req.body.title, subcategory_img, req.body.category_category_id];
+		const values = [req.body.subcategory_title, subcategory_img, req.body.category_category_id];
 		db.query(q, values, (err, data) => {
 			if (err) return res.json(err);
 			return res.json(data, 'Subcategory has been created successfully!');
