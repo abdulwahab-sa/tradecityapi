@@ -57,8 +57,28 @@ const getInquiries = async (req, res) => {
 
 const createSubcategory = async (req, res) => {
 	try {
+		const subcategory_img = req.files?.['subcategory_img']?.[0]?.buffer;
+		if (!subcategory_img) {
+			throw new Error('No subcategory image found in request');
+		}
+
+		const q = 'INSERT INTO subcategory (`subcategory_title`, `subcategory_img`, `category_category_id`) VALUES (?, ?, ?);';
+		const values = [req.body.subcategory_title, subcategory_img, req.body.category_category_id];
+
+		const [result] = await db.promise().query(q, values);
+		return res.status(200).json({ message: 'Subcategory has been created successfully!', data: result });
+	} catch (error) {
+		console.error(error);
+		return res.status(500).json({ message: 'Error creating subcategory' });
+	}
+};
+
+/*
+
+const createSubcategory = async (req, res) => {
+	try {
 		const subcategory_img = req.files['subcategory_img'][0].buffer;
-		const q = 'INSERT INTO subcategory (`subcategory_title`, `subcategory_img`, `category_category_id`) VALUES (?)';
+		const q = 'INSERT INTO subcategory (`subcategory_title`, `subcategory_img`, `category_category_id`) VALUES (?);';
 		const values = [req.body.subcategory_title, subcategory_img, req.body.category_category_id];
 		db.query(q, values, (err, data) => {
 			if (err) return res.json(err);
@@ -68,7 +88,7 @@ const createSubcategory = async (req, res) => {
 		res.send(error);
 	}
 };
-
+*/
 const createProduct = async (req, res) => {
 	try {
 		const product_img = req.files['product_img'][0].buffer;
