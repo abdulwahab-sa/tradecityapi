@@ -57,19 +57,32 @@ const getInquiries = async (req, res) => {
 
 const createSubcategory = async (req, res) => {
 	try {
+		// Validate request body parameters
+		const { subcategory_title, category_category_id } = req.body;
+		if (!subcategory_title) {
+			throw new Error('Subcategory title is required');
+		}
+		if (!category_category_id) {
+			throw new Error('Category ID is required');
+		}
+
+		// Get subcategory image from request
 		const subcategory_img = req.files?.['subcategory_img']?.[0]?.buffer;
 		if (!subcategory_img) {
 			throw new Error('No subcategory image found in request');
 		}
 
+		// Insert subcategory into database
 		const q = 'INSERT INTO subcategory (`subcategory_title`, `subcategory_img`, `category_category_id`) VALUES (?, ?, ?);';
-		const values = [req.body.subcategory_title, subcategory_img, req.body.category_category_id];
-
+		const values = [subcategory_title, subcategory_img, category_category_id];
 		const [result] = await db.promise().query(q, values);
+
+		// Return success response
 		return res.status(200).json({ message: 'Subcategory has been created successfully!', data: result });
 	} catch (error) {
+		// Log error and return error response
 		console.error(error);
-		return res.status(500).json({ message: 'Error creating subcategory', error });
+		return res.status(500).json({ message: 'Error creating subcategory', error: error.message });
 	}
 };
 
