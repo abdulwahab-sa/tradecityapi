@@ -69,7 +69,7 @@ const createSubcategory = async (req, res) => {
 		return res.status(200).json({ message: 'Subcategory has been created successfully!', data: result });
 	} catch (error) {
 		console.error(error);
-		return res.status(500).json({ message: 'Error creating subcategory' });
+		return res.status(500).json({ message: 'Error creating subcategory', error });
 	}
 };
 
