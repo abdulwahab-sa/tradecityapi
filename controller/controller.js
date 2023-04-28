@@ -75,7 +75,7 @@ const createSubcategory = async (req, res) => {
 		// Insert subcategory into database
 		const q = 'INSERT INTO subcategory (`subcategory_title`, `subcategory_img`, `category_category_id`) VALUES (?, ?, ?);';
 		const values = [subcategory_title, subcategory_img, category_category_id];
-		const [result] = await db.query(q, values);
+		const { result } = await db.query(q, values);
 
 		// Return success response
 		return res.status(200).json({ message: 'Subcategory has been created successfully!', data: result });
