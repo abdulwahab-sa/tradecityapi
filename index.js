@@ -22,6 +22,6 @@ app.use(cors(), function (req, res, next) {
 
 app.use('/api', router);
 
-app.listen(process.env.PORT || 3005, () => {
+app.listen(process.env.PORT || 3000, () => {
 	console.log('Backend is working!');
 });
