@@ -10,8 +10,8 @@ const getCategories = async (req, res) => {
 		const q = 'SELECT * FROM category';
 		const result = await db.query(q);
 		return res.status(200).json({ result });
-	} catch (err) {
-		res.status(500).json({ error: err.message });
+	} catch (error) {
+		res.status(500).json({ error: error.message });
 	}
 };
 
@@ -20,8 +20,8 @@ const getSubcategories = async (req, res) => {
 		const q = 'SELECT * FROM subcategory';
 		const result = await db.query(q);
 		return res.status(200).json({ result });
-	} catch (err) {
-		res.status(500).json({ error: err.message });
+	} catch (error) {
+		res.status(500).json({ error: error.message });
 	}
 };
 
@@ -30,8 +30,8 @@ const getProducts = async (req, res) => {
 		const q = 'SELECT * FROM product';
 		const result = await db.query(q);
 		return res.status(200).json({ result });
-	} catch (err) {
-		res.status(500).json({ error: err.message });
+	} catch (error) {
+		res.status(500).json({ error: error.message });
 	}
 };
 
@@ -41,7 +41,7 @@ const getInquiries = async (req, res) => {
 		const result = await db.query(q);
 		return res.status(200).json({ result });
 	} catch (error) {
-		res.status(500).json({ error: err.message });
+		res.status(500).json({ error: error.message });
 	}
 };
 
@@ -180,8 +180,8 @@ const updateProduct = async (req, res) => {
 
 		// Return success response
 		res.status(200).json({ message: 'Product has been updated successfully!', data: result });
-	} catch (err) {
-		return res.status(500).json({ message: 'Error updating product', error: err.message });
+	} catch (error) {
+		return res.status(500).json({ message: 'Error updating product', error: error.message });
 	}
 };
 
@@ -203,8 +203,8 @@ const updateSubcategory = async (req, res) => {
 
 		// Return success response
 		return res.status(200).json({ message: 'Subcategory has been updated successfully!', data: result });
-	} catch (err) {
-		return res.status(500).json({ message: 'Error updating subcategory', error: err.message });
+	} catch (error) {
+		return res.status(500).json({ message: 'Error updating subcategory', error: error.message });
 	}
 };
 
@@ -215,8 +215,8 @@ const deleteProduct = async (req, res) => {
 		const product_id = req.params.id;
 		const result = await db.query(q, [product_id]);
 		result && res.status(200).json({ message: 'Product deleted successfully!' });
-	} catch (err) {
-		return res.status(500).json({ message: 'Error deleting product', error: err.message });
+	} catch (error) {
+		return res.status(500).json({ message: 'Error deleting product', error: error.message });
 	}
 };
 
@@ -228,8 +228,8 @@ const deleteInquiry = async (req, res) => {
 
 		const result = await db.query(q, [inquiry_id]);
 		result && res.status(200).json({ message: 'Inquiry deleted successfully!' });
-	} catch (err) {
-		return res.status(500).json({ message: 'Error deleting inquiry', error: err.message });
+	} catch (error) {
+		return res.status(500).json({ message: 'Error deleting inquiry', error: error.message });
 	}
 };
 
