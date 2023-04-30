@@ -5,44 +5,36 @@ const upload = multer({ storage });
 
 // GET CONTROLLERS
 
-const getCategories = async (req, res) => {
-	try {
-		const q = 'SELECT * FROM category';
-		const result = await db.query(q);
-		return res.status(200).json(result);
-	} catch (error) {
-		res.status(500).json({ error: error.message });
-	}
+const getCategories = (req, res) => {
+	const q = 'SELECT * FROM category';
+	db.query(q, (err, data) => {
+		if (err) return res.json(err);
+		return res.json(data);
+	});
 };
 
-const getSubcategories = async (req, res) => {
-	try {
-		const q = 'SELECT * FROM subcategory';
-		const result = await db.query(q);
-		return res.status(200).json(result);
-	} catch (error) {
-		res.status(500).json({ error: error.message });
-	}
+const getSubcategories = (req, res) => {
+	const q = 'SELECT * FROM subcategory';
+	db.query(q, (err, data) => {
+		if (err) return res.json(err);
+		return res.json(data);
+	});
 };
 
-const getProducts = async (req, res) => {
-	try {
-		const q = 'SELECT * FROM product';
-		const result = await db.query(q);
-		return res.status(200).json(result);
-	} catch (error) {
-		res.status(500).json({ error: error.message });
-	}
+const getProducts = (req, res) => {
+	const q = 'SELECT * FROM product';
+	db.query(q, (err, data) => {
+		if (err) return res.json(err);
+		return res.json(data);
+	});
 };
 
-const getInquiries = async (req, res) => {
-	try {
-		const q = 'SELECT * FROM inquiry';
-		const result = await db.query(q);
-		return res.status(200).json(result);
-	} catch (error) {
-		res.status(500).json({ error: error.message });
-	}
+const getInquiries = (req, res) => {
+	const q = 'SELECT * FROM inquiry';
+	db.query(q, (err, data) => {
+		if (err) return res.json(err);
+		return res.json(data);
+	});
 };
 
 // POST CONTROLLERS
