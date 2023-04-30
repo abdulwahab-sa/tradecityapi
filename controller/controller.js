@@ -143,7 +143,7 @@ const createInquiry = async (req, res) => {
 
 		// Insert inquiry into database
 		const q = 'INSERT INTO inquiry (`name`, `email`, `phone`, `req_qty`, `order_detail`) VALUES (?, ?, ?, ?, ?);';
-		const values = [name, email, article, req_qty, order_detail];
+		const values = [name, email, phone, req_qty, order_detail];
 		const result = await db.query(q, values);
 
 		// Return success response
