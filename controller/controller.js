@@ -9,7 +9,7 @@ const getCategories = async (req, res) => {
 	try {
 		const q = 'SELECT * FROM category';
 		const result = await db.query(q);
-		return res.status(200).json({ result });
+		return res.status(200).json(result);
 	} catch (error) {
 		res.status(500).json({ error: error.message });
 	}
@@ -19,7 +19,7 @@ const getSubcategories = async (req, res) => {
 	try {
 		const q = 'SELECT * FROM subcategory';
 		const result = await db.query(q);
-		return res.status(200).json({ result });
+		return res.status(200).json(result);
 	} catch (error) {
 		res.status(500).json({ error: error.message });
 	}
@@ -29,7 +29,7 @@ const getProducts = async (req, res) => {
 	try {
 		const q = 'SELECT * FROM product';
 		const result = await db.query(q);
-		return res.status(200).json({ result });
+		return res.status(200).json(result);
 	} catch (error) {
 		res.status(500).json({ error: error.message });
 	}
@@ -39,7 +39,7 @@ const getInquiries = async (req, res) => {
 	try {
 		const q = 'SELECT * FROM inquiry';
 		const result = await db.query(q);
-		return res.status(200).json({ result });
+		return res.status(200).json(result);
 	} catch (error) {
 		res.status(500).json({ error: error.message });
 	}
