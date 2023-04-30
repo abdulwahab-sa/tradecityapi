@@ -11,7 +11,7 @@ const getCategories = async (req, res) => {
 		const result = await db.query(q);
 		return res.status(200).json({ result });
 	} catch (err) {
-		res.status(500).json({ err });
+		res.status(500).json({ error: err.message });
 	}
 };
 
@@ -21,7 +21,7 @@ const getSubcategories = async (req, res) => {
 		const result = await db.query(q);
 		return res.status(200).json({ result });
 	} catch (err) {
-		res.status(500).json({ err });
+		res.status(500).json({ error: err.message });
 	}
 };
 
@@ -31,7 +31,7 @@ const getProducts = async (req, res) => {
 		const result = await db.query(q);
 		return res.status(200).json({ result });
 	} catch (err) {
-		res.status(500).json({ err });
+		res.status(500).json({ error: err.message });
 	}
 };
 
@@ -41,7 +41,7 @@ const getInquiries = async (req, res) => {
 		const result = await db.query(q);
 		result && res.status(200).json({ result });
 	} catch (error) {
-		res.status(500).json({ err });
+		res.status(500).json({ error: err.message });
 	}
 };
 
