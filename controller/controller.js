@@ -110,7 +110,7 @@ const createProduct = async (req, res) => {
 		// Get the inserted product from database
 		const selectQuery = 'SELECT * FROM product WHERE `product_id` = ?';
 		const selectValues = [insertId];
-		const [product] = await db.query(selectQuery, selectValues);
+		const { product } = await db.query(selectQuery, selectValues);
 
 		// Return success response
 		return res.status(201).json({ message: 'Product has been created successfully!', data: product });
