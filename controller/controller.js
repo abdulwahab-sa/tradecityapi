@@ -160,7 +160,7 @@ const createInquiry = async (req, res) => {
 	} catch (error) {
 		// Log error and return error response
 		console.error(error);
-		return res.status(500).json({ message: 'Error creating inquiry', error: error.message });
+		return res.status(500).json({ message: 'Error creating inquiry', error: error.message, body: req.body });
 	}
 };
 
