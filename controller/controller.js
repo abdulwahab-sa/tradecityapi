@@ -78,11 +78,11 @@ const createSubcategory = async (req, res) => {
 const createProduct = async (req, res) => {
 	try {
 		// Validate request body parameters
-		const { product_title, article, subcategory_subcategory_id, category_category_id } = req.body;
+		const { product_title, product_article, subcategory_subcategory_id, category_category_id } = req.body;
 		if (!product_title) {
 			throw new Error('Product title is required');
 		}
-		if (!article) {
+		if (!product_article) {
 			throw new Error('Article is required');
 		}
 
@@ -102,8 +102,8 @@ const createProduct = async (req, res) => {
 
 		// Insert product into database
 		const q =
-			'INSERT INTO product (`product_title`, `product_img`, `product_description`, `category_category_id`, `subcategory_subcategory_id`) VALUES (?, ?, ?, ?, ?);';
-		const values = [product_title, product_img, article, category_category_id, subcategory_subcategory_id];
+			'INSERT INTO product (`product_title`, `product_img`, `product_description`, `category_category_id`, `subcategory_subcategory_id`, `product_article`) VALUES (?, ?, ?, ?, ?, ?);';
+		const values = [product_title, product_img, product_description, category_category_id, subcategory_subcategory_id, product_article];
 		const { insertId } = await db.query(q, values);
 
 		// Get the inserted product from database
@@ -256,3 +256,38 @@ module.exports = {
 	deleteProduct,
 	deleteInquiry,
 };
+
+/*
+SELECT 
+    p.product_id, 
+    p.product_title, 
+    p.product_description,
+    p.product_img,
+    c.category_title, 
+    s.subcategory_title
+FROM 
+    heroku_8b885150d94607e.product AS p 
+    JOIN heroku_8b885150d94607e.subcategory AS s ON p.subcategory_subcategory_id = s.subcategory_id
+    JOIN heroku_8b885150d94607e.category AS c ON s.category_category_id = c.category_id;
+
+ -----------------------------------------------------
+const getProducts = (req, res) => {
+	const q = `SELECT 
+			p.product_id, 
+			p.product_title, 
+			p.product_description,
+			p.product_img,
+			c.category_title, 
+			s.subcategory_title
+		FROM 
+			heroku_8b885150d94607e.product AS p 
+			JOIN heroku_8b885150d94607e.subcategory AS s ON p.subcategory_subcategory_id = s.subcategory_id
+			JOIN heroku_8b885150d94607e.category AS c ON s.category_category_id = c.category_id`;
+	db.query(q, (err, data) => {
+		if (err) return res.json(err);
+		return res.json(data);
+	});
+};
+
+
+*/
