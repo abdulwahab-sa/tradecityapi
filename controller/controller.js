@@ -78,7 +78,8 @@ const createSubcategory = async (req, res) => {
 const createProduct = async (req, res) => {
 	try {
 		// Validate request body parameters
-		const { product_title, product_article, subcategory_subcategory_id, category_category_id } = req.body;
+		const { product_title, product_article, product_description, subcategory_subcategory_id, category_category_id } = req.body;
+		console.log(req.body);
 		if (!product_title) {
 			throw new Error('Product title is required');
 		}
