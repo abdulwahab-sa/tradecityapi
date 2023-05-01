@@ -59,15 +59,15 @@ const createSubcategory = async (req, res) => {
 		// Insert subcategory into database
 		const q = 'INSERT INTO subcategory (`subcategory_title`, `subcategory_img`, `category_category_id`) VALUES (?, ?, ?);';
 		const values = [subcategory_title, subcategory_img, category_category_id];
-		const { insertId } = await db.query(q, values);
-
+		await db.query(q, values);
+		/*
 		// Get the inserted subcategory from database
 		const selectQuery = 'SELECT * FROM subcategory WHERE `subcategory_id` = ?';
 		const selectValues = [insertId];
 		const [subcategory] = await db.query(selectQuery, selectValues);
-
+*/
 		// Return success response
-		return res.status(201).json({ message: 'Subcategory has been created successfully!', data: subcategory });
+		return res.status(201).json({ message: 'Subcategory has been created successfully!' });
 	} catch (error) {
 		// Log error and return error response
 		console.error(error);
@@ -105,19 +105,19 @@ const createProduct = async (req, res) => {
 		const q =
 			'INSERT INTO product (`product_title`, `product_img`, `product_description`, `category_category_id`, `subcategory_subcategory_id`, `product_article`) VALUES (?, ?, ?, ?, ?, ?);';
 		const values = [product_title, product_img, product_description, category_category_id, subcategory_subcategory_id, product_article];
-		const { insertId } = await db.query(q, values);
-
+		await db.query(q, values);
+		/*
 		// Get the inserted product from database
 		const selectQuery = 'SELECT * FROM product WHERE `product_id` = ?';
 		const selectValues = [insertId];
-		const { product } = await db.query(selectQuery, selectValues);
-
+		await db.query(selectQuery, selectValues);
+*/
 		// Return success response
-		return res.status(201).json({ message: 'Product has been created successfully!', data: product });
+		return res.status(201).json({ message: 'Product has been created successfully!' });
 	} catch (error) {
 		// Log error and return error response
 		console.error(error);
-		return res.status(500).json({ message: 'Error creating product', error: error.message, body: req.body });
+		return res.status(500).json({ message: 'Error creating product', error: error.message });
 	}
 };
 
@@ -147,15 +147,16 @@ const createInquiry = async (req, res) => {
 		// Insert inquiry into database
 		const q = 'INSERT INTO inquiry (`name`, `email`, `phone`, `req_qty`, `order_detail`) VALUES (?, ?, ?, ?, ?);';
 		const values = [name, email, phone, req_qty, order_detail];
-		const { insertId } = await db.query(q, values);
-
+		await db.query(q, values);
+		/*
+		
 		// Get the inserted inquiry from database
 		const selectQuery = 'SELECT * FROM inquiry WHERE `inquiry_id` = ?';
 		const selectValues = [insertId];
 		const [inquiry] = await db.query(selectQuery, selectValues);
-
+*/
 		// Return success response
-		return res.status(201).json({ message: 'Inquiry has been created successfully!', data: inquiry });
+		return res.status(201).json({ message: 'Inquiry has been created successfully!' });
 	} catch (error) {
 		// Log error and return error response
 		console.error(error);
