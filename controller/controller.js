@@ -104,10 +104,15 @@ const createProduct = async (req, res) => {
 		const q =
 			'INSERT INTO product (`product_title`, `product_img`, `product_description`, `category_category_id`, `subcategory_subcategory_id`) VALUES (?, ?, ?, ?, ?);';
 		const values = [product_title, product_img, article, category_category_id, subcategory_subcategory_id];
-		const result = await db.query(q, values);
+		const { insertId } = await db.query(q, values);
+
+		// Get the inserted product from database
+		const selectQuery = 'SELECT * FROM product WHERE `product_id` = ?';
+		const selectValues = [insertId];
+		const [product] = await db.query(selectQuery, selectValues);
 
 		// Return success response
-		return res.status(201).json({ message: 'Product has been created successfully!', data: result });
+		return res.status(201).json({ message: 'Product has been created successfully!', data: product });
 	} catch (error) {
 		// Log error and return error response
 		console.error(error);
@@ -141,10 +146,15 @@ const createInquiry = async (req, res) => {
 		// Insert inquiry into database
 		const q = 'INSERT INTO inquiry (`name`, `email`, `phone`, `req_qty`, `order_detail`) VALUES (?, ?, ?, ?, ?);';
 		const values = [name, email, phone, req_qty, order_detail];
-		const result = await db.query(q, values);
+		const { insertId } = await db.query(q, values);
+
+		// Get the inserted inquiry from database
+		const selectQuery = 'SELECT * FROM inquiry WHERE `inquiry_id` = ?';
+		const selectValues = [insertId];
+		const [inquiry] = await db.query(selectQuery, selectValues);
 
 		// Return success response
-		return res.status(201).json({ message: 'Inquiry has been created successfully!', data: result });
+		return res.status(201).json({ message: 'Inquiry has been created successfully!', data: inquiry });
 	} catch (error) {
 		// Log error and return error response
 		console.error(error);
@@ -173,10 +183,10 @@ const updateProduct = async (req, res) => {
 
 		const values = [product_title, article, product_img, product_description, subcategory_subcategory_id, category_category_id];
 
-		const result = await db.query(q, [...values, product_id]);
+		await db.query(q, [...values, product_id]);
 
 		// Return success response
-		res.status(200).json({ message: 'Product has been updated successfully!', data: result });
+		res.status(200).json({ message: 'Product has been updated successfully!' });
 	} catch (error) {
 		return res.status(500).json({ message: 'Error updating product', error: error.message });
 	}
@@ -196,10 +206,10 @@ const updateSubcategory = async (req, res) => {
 		const q = 'UPDATE subcategory SET `subcategory_title`=?, `subcategory_img`=?,  `category_category_id`=?';
 
 		const values = [subcategory_title, subcategory_img, category_category_id];
-		const result = await db.query(q, [...values, subcategory_id]);
+		await db.query(q, [...values, subcategory_id]);
 
 		// Return success response
-		return res.status(200).json({ message: 'Subcategory has been updated successfully!', data: result });
+		return res.status(200).json({ message: 'Subcategory has been updated successfully!' });
 	} catch (error) {
 		return res.status(500).json({ message: 'Error updating subcategory', error: error.message });
 	}
@@ -210,8 +220,11 @@ const updateSubcategory = async (req, res) => {
 const deleteProduct = async (req, res) => {
 	try {
 		const product_id = req.params.id;
-		const result = await db.query(q, [product_id]);
-		result && res.status(200).json({ message: 'Product deleted successfully!' });
+		const q = 'DELETE FROM product WHERE product_id = ?';
+
+		await db.query(q, [product_id]);
+
+		res.status(200).json({ message: 'Product deleted successfully!' });
 	} catch (error) {
 		return res.status(500).json({ message: 'Error deleting product', error: error.message });
 	}
@@ -223,8 +236,8 @@ const deleteInquiry = async (req, res) => {
 
 		const q = 'DELETE FROM inquiry WHERE inquiry_id = ?';
 
-		const result = await db.query(q, [inquiry_id]);
-		result && res.status(200).json({ message: 'Inquiry deleted successfully!' });
+		await db.query(q, [inquiry_id]);
+		res.status(200).json({ message: 'Inquiry deleted successfully!' });
 	} catch (error) {
 		return res.status(500).json({ message: 'Error deleting inquiry', error: error.message });
 	}
