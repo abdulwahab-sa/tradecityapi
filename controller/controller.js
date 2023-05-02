@@ -125,24 +125,6 @@ const createInquiry = async (req, res) => {
 	try {
 		// Validate request body parameters
 		const { inquiry_name, inquiry_email, inquiry_phone, inquiry_req_qty, order_detail } = req.body;
-		if (!inquiry_name) {
-			throw new Error('Client Name is required');
-		}
-		if (!inquiry_email) {
-			throw new Error('Client Email is required');
-		}
-
-		if (!inquiry_phone) {
-			throw new Error('Client Phone is required');
-		}
-
-		if (!inquiry_req_qty) {
-			throw new Error('Quantity is required');
-		}
-
-		if (!order_detail) {
-			throw new Error('Order Detail is required');
-		}
 
 		// Insert inquiry into database
 		const q =
@@ -155,7 +137,7 @@ const createInquiry = async (req, res) => {
 	} catch (error) {
 		// Log error and return error response
 		console.error(error);
-		return res.status(500).json({ message: 'Error creating inquiry', error: error.message, body: req.body });
+		return res.status(500).json({ message: 'Error creating inquiry', error: error.message });
 	}
 };
 
