@@ -124,37 +124,32 @@ const createProduct = async (req, res) => {
 const createInquiry = async (req, res) => {
 	try {
 		// Validate request body parameters
-		const { name, email, phone, req_qty, order_detail } = req.body;
-		if (!name) {
-			throw new Error('Name is required');
+		const { inquiry_name, inquiry_email, inquiry_phone, inquiry_req_qty, inquiry_order_detail } = req.body;
+		if (!inquiry_name) {
+			throw new Error('Client Name is required');
 		}
-		if (!email) {
-			throw new Error('Email is required');
-		}
-
-		if (!phone) {
-			throw new Error('Phone is required');
+		if (!inquiry_email) {
+			throw new Error('Client Email is required');
 		}
 
-		if (!req_qty) {
+		if (!inquiry_phone) {
+			throw new Error('Client Phone is required');
+		}
+
+		if (!inquiry_req_qty) {
 			throw new Error('Quantity is required');
 		}
 
-		if (!order_detail) {
+		if (!inquiry_order_detail) {
 			throw new Error('Order Detail is required');
 		}
 
 		// Insert inquiry into database
-		const q = 'INSERT INTO inquiry (`name`, `email`, `phone`, `req_qty`, `order_detail`) VALUES (?, ?, ?, ?, ?);';
-		const values = [name, email, phone, req_qty, order_detail];
+		const q =
+			'INSERT INTO inquiry (`inquiry_name`, `inquiry_email`, `inquiry_phone`, `inquiry_req_qty`, `order_detail`) VALUES (?, ?, ?, ?, ?);';
+		const values = [inquiry_name, inquiry_email, inquiry_phone, inquiry_req_qty, order_detail];
 		await db.query(q, values);
-		/*
-		
-		// Get the inserted inquiry from database
-		const selectQuery = 'SELECT * FROM inquiry WHERE `inquiry_id` = ?';
-		const selectValues = [insertId];
-		const [inquiry] = await db.query(selectQuery, selectValues);
-*/
+
 		// Return success response
 		return res.status(201).json({ message: 'Inquiry has been created successfully!' });
 	} catch (error) {
