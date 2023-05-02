@@ -124,7 +124,7 @@ const createProduct = async (req, res) => {
 const createInquiry = async (req, res) => {
 	try {
 		// Validate request body parameters
-		const { inquiry_name, inquiry_email, inquiry_phone, inquiry_req_qty, inquiry_order_detail } = req.body;
+		const { inquiry_name, inquiry_email, inquiry_phone, inquiry_req_qty, order_detail } = req.body;
 		if (!inquiry_name) {
 			throw new Error('Client Name is required');
 		}
@@ -140,7 +140,7 @@ const createInquiry = async (req, res) => {
 			throw new Error('Quantity is required');
 		}
 
-		if (!inquiry_order_detail) {
+		if (!order_detail) {
 			throw new Error('Order Detail is required');
 		}
 
