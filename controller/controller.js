@@ -147,7 +147,7 @@ const updateProduct = async (req, res) => {
 	try {
 		// Validate request body parameters
 		const product_id = req.params.id;
-		const { product_title, article, product_description, subcategory_subcategory_id, category_category_id } = req.body;
+		const { product_title, product_article, product_description, subcategory_subcategory_id, category_category_id } = req.body;
 
 		// Get product image from request
 		const product_img = req.files?.['product_img']?.[0]?.buffer;
@@ -160,7 +160,7 @@ const updateProduct = async (req, res) => {
 		const q =
 			'UPDATE product SET `product_title`=?, `product_img`=?, `product_description`=?, `category_category_id`=?, `subcategory_subcategory_id`=? ';
 
-		const values = [product_title, article, product_img, product_description, subcategory_subcategory_id, category_category_id];
+		const values = [product_title, product_article, product_img, product_description, subcategory_subcategory_id, category_category_id];
 
 		await db.query(q, [...values, product_id]);
 
