@@ -158,11 +158,19 @@ const updateProduct = async (req, res) => {
 		// Insert Product into database
 
 		const q =
-			'UPDATE product SET `product_title`=?, `product_img`=?, `product_description`=?, `category_category_id`=?, `subcategory_subcategory_id`=? ';
+			'UPDATE product SET `product_title`=?, `product_img`=?, `product_description`=?, `category_category_id`=?, `subcategory_subcategory_id`=? WHERE `product_id`=?';
 
-		const values = [product_title, product_article, product_img, product_description, subcategory_subcategory_id, category_category_id];
+		const values = [
+			product_title,
+			product_article,
+			product_img,
+			product_description,
+			subcategory_subcategory_id,
+			category_category_id,
+			product_id,
+		];
 
-		await db.query(q, [...values, product_id]);
+		await db.query(q, values);
 
 		// Return success response
 		res.status(200).json({ message: 'Product has been updated successfully!' });
@@ -182,10 +190,10 @@ const updateSubcategory = async (req, res) => {
 
 		// Insert Subcategory into database
 
-		const q = 'UPDATE subcategory SET `subcategory_title`=?, `subcategory_img`=?,  `category_category_id`=?';
+		const q = 'UPDATE subcategory SET `subcategory_title`=?, `subcategory_img`=?,  `category_category_id`=? WHERE `subcategory_id`=?';
 
-		const values = [subcategory_title, subcategory_img, category_category_id];
-		await db.query(q, [...values, subcategory_id]);
+		const values = [subcategory_title, subcategory_img, category_category_id, subcategory_id];
+		await db.query(q, values);
 
 		// Return success response
 		return res.status(200).json({ message: 'Subcategory has been updated successfully!' });
