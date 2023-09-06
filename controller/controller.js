@@ -60,8 +60,9 @@ const createSubcategory = async (req, res) => {
 		const q = 'INSERT INTO subcategory (`subcategory_title`, `subcategory_img`, `category_category_id`) VALUES (?, ?, ?);';
 		const values = [subcategory_title, subcategory_img, category_category_id];
 		await db.query(q, values);
-		/*
+
 		// Get the inserted subcategory from database
+		/*
 		const selectQuery = 'SELECT * FROM subcategory WHERE `subcategory_id` = ?';
 		const selectValues = [insertId];
 		const [subcategory] = await db.query(selectQuery, selectValues);
@@ -111,7 +112,7 @@ const createProduct = async (req, res) => {
 		const selectQuery = 'SELECT * FROM product WHERE `product_id` = ?';
 		const selectValues = [insertId];
 		await db.query(selectQuery, selectValues);
-*/
+		*/
 		// Return success response
 		return res.status(201).json({ message: 'Product has been created successfully!' });
 	} catch (error) {
@@ -243,8 +244,8 @@ module.exports = {
 	deleteProduct,
 	deleteInquiry,
 };
-
 /*
+
 SELECT 
     p.product_id, 
     p.product_title, 
@@ -275,6 +276,5 @@ const getProducts = (req, res) => {
 		return res.json(data);
 	});
 };
-
 
 */

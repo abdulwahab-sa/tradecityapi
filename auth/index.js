@@ -1,13 +1,13 @@
+require('dotenv').config();
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 
 const saltRounds = 10;
-const plainPassword = 'Pakistan0011-';
+const plainPassword = process.env.USER_PASSWORD;
 
 (async () => {
 	const hashedPass = await bcrypt.hash(plainPassword, saltRounds);
 	users.password = hashedPass;
-	console.log(hashedPass);
 })();
 const users = {
 	id: '1',

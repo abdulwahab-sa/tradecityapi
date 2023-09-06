@@ -48,4 +48,9 @@ router.route('/inquiry/:id').delete(deleteInquiry);
 
 router.route('/login').post(loginController);
 router.route('/refresh').post(refreshController);
+
+router.route('/test').get((req, res) => {
+	res.send('Hello World!');
+});
+
 module.exports = router;

@@ -8,7 +8,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 const corsOptions = {
-	origin: 'http://localhost:5173',
+	origin: '*',
 	credentials: true,
 };
 app.use(cors(corsOptions));
@@ -22,6 +22,6 @@ app.use(function (req, res, next) {
 
 app.use('/api', router);
 
-app.listen(process.env.PORT || 3000, () => {
+app.listen(process.env.PORT || 5000, () => {
 	console.log('Backend is working!');
 });
