@@ -22,6 +22,6 @@ app.use(function (req, res, next) {
 
 app.use('/api', router);
 
-app.listen(process.env.PORT || 5000, () => {
+app.listen(`0.0.0.0:$PORT` || 5000, () => {
 	console.log('Backend is working!');
 });
