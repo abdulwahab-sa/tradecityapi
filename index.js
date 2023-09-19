@@ -24,4 +24,5 @@ app.use('/api', router);
 
 app.listen(process.env.PORT || 5000, () => {
 	console.log('Backend is working!');
+	console.log(process.env.MYSQLUSERNAME);
 });
