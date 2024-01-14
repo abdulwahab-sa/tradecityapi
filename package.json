@@ -3,15 +3,14 @@
   "version": "1.0.0",
   "description": "",
   "engines": {
-    "node": "18.18.2",
-    "npm": "10.1.0"
+    "node": "20.11.0",
+    "npm": "10.3.0"
   },
   "main": "index.js",
   "type": "commonjs",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node index.js",
-    "build": "npm install && npm run start"
+    "start": "node index.js"
   },
   "author": "abdulwahab-dev",
   "license": "ISC",
