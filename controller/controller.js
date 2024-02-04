@@ -143,7 +143,7 @@ const createInquiry = async (req, res) => {
 };
 
 // UPDATE CONTROLLERS
-
+/*
 const updateProduct = async (req, res) => {
 	// Validate request body parameters
 	const product_id = parseInt(req.params.id);
@@ -166,6 +166,72 @@ const updateProduct = async (req, res) => {
 		product_id,
 	];
 
+	db.query(q, values, (err, result) => {
+		if (err) {
+			return res.status(500).json({ message: 'Error updating product', error: err.message });
+		} else {
+			if (result.affectedRows > 0) {
+				return res.status(200).json({ message: 'Product has been updated successfully!' });
+			} else {
+				return res.status(404).json({ message: 'Product not found' });
+			}
+		}
+	});
+};
+*/
+
+const updateProduct = async (req, res) => {
+	// Validate request body parameters
+	const product_id = parseInt(req.params.id);
+	const { product_title, product_article, product_description, subcategory_subcategory_id, category_category_id } = req.body;
+
+	// Get product image from request if available
+	const product_img = req.files?.['product_img']?.[0]?.buffer;
+
+	// Construct the base update query
+	let q = 'UPDATE product SET ';
+	const values = [];
+
+	// Construct the SET clause for the update query
+	const setClauses = [];
+	if (product_title) {
+		setClauses.push('product_title = ?');
+		values.push(product_title);
+	}
+	if (product_article) {
+		setClauses.push('product_article = ?');
+		values.push(product_article);
+	}
+	if (product_description) {
+		setClauses.push('product_description = ?');
+		values.push(product_description);
+	}
+	if (subcategory_subcategory_id) {
+		setClauses.push('subcategory_subcategory_id = ?');
+		values.push(subcategory_subcategory_id);
+	}
+	if (category_category_id) {
+		setClauses.push('category_category_id = ?');
+		values.push(category_category_id);
+	}
+	if (product_img) {
+		setClauses.push('product_img = ?');
+		values.push(product_img);
+	}
+
+	// If no fields to update, return with a message
+	if (setClauses.length === 0) {
+		return res.status(400).json({ message: 'No fields to update' });
+	}
+
+	// Add the set clauses to the update query
+	q += setClauses.join(', ');
+
+	// Add the WHERE clause
+	q += ' WHERE product.product_id = ?';
+	values.push(product_id);
+
+	// Execute the update query
 	db.query(q, values, (err, result) => {
 		if (err) {
 			return res.status(500).json({ message: 'Error updating product', error: err.message });
