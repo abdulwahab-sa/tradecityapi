@@ -146,7 +146,7 @@ const createInquiry = async (req, res) => {
 
 const updateProduct = async (req, res) => {
 	// Validate request body parameters
-	const product_id = req.params.id;
+	const product_id = parseInt(req.params.id);
 	const { product_title, product_article, product_description, subcategory_subcategory_id, category_category_id } = req.body;
 
 	// Get product image from request
@@ -154,8 +154,7 @@ const updateProduct = async (req, res) => {
 
 	// Insert Product into database
 
-	const q =
-		'UPDATE product SET `product_title`=?, `product_img`=?, `product_description`=?, `category_category_id`=?, `subcategory_subcategory_id`=? WHERE `product_id`=?';
+	const q = `UPDATE product SET product_title=?, product_article?, product_img=?, product_description=?, category_category_id=?, subcategory_subcategory_id=? WHERE product_id= ?`;
 
 	const values = [
 		product_title,
