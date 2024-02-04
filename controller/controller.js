@@ -59,7 +59,7 @@ const createSubcategory = async (req, res) => {
 		// Insert subcategory into database
 		const q = 'INSERT INTO subcategory (`subcategory_title`, `subcategory_img`, `category_category_id`) VALUES (?, ?, ?);';
 		const values = [subcategory_title, subcategory_img, category_category_id];
-		await db.query(q, values);
+		const result = db.query(q, values);
 
 		// Get the inserted subcategory from database
 		/*
@@ -68,7 +68,7 @@ const createSubcategory = async (req, res) => {
 		const [subcategory] = await db.query(selectQuery, selectValues);
 */
 		// Return success response
-		return res.status(201).json({ message: 'Subcategory has been created successfully!' });
+		if (result) return res.status(201).json({ message: 'Subcategory has been created successfully!' });
 	} catch (error) {
 		// Log error and return error response
 		console.error(error);
@@ -131,10 +131,10 @@ const createInquiry = async (req, res) => {
 		const q =
 			'INSERT INTO inquiry (`inquiry_name`, `inquiry_email`, `inquiry_phone`, `inquiry_req_qty`, `order_detail`) VALUES (?, ?, ?, ?, ?);';
 		const values = [inquiry_name, inquiry_email, inquiry_phone, inquiry_req_qty, order_detail];
-		await db.query(q, values);
+		const inquiry = db.query(q, values);
 
 		// Return success response
-		return res.status(201).json({ message: 'Inquiry has been created successfully!' });
+		if (inquiry) return res.status(201).json({ message: 'Inquiry has been created successfully!' });
 	} catch (error) {
 		// Log error and return error response
 		console.error(error);
@@ -171,10 +171,10 @@ const updateProduct = async (req, res) => {
 			product_id,
 		];
 
-		await db.query(q, values);
+		const result = db.query(q, values);
 
 		// Return success response
-		res.status(200).json({ message: 'Product has been updated successfully!' });
+		if (result) return res.status(200).json({ message: 'Product has been updated successfully!' });
 	} catch (error) {
 		return res.status(500).json({ message: 'Error updating product', error: error.message });
 	}
@@ -194,10 +194,10 @@ const updateSubcategory = async (req, res) => {
 		const q = 'UPDATE subcategory SET `subcategory_title`=?, `subcategory_img`=?,  `category_category_id`=? WHERE `subcategory_id`=?';
 
 		const values = [subcategory_title, subcategory_img, category_category_id, subcategory_id];
-		await db.query(q, values);
+		const result = db.query(q, values);
 
 		// Return success response
-		return res.status(200).json({ message: 'Subcategory has been updated successfully!' });
+		if (result) return res.status(200).json({ message: 'Subcategory has been updated successfully!' });
 	} catch (error) {
 		return res.status(500).json({ message: 'Error updating subcategory', error: error.message });
 	}
@@ -210,7 +210,7 @@ const deleteProduct = async (req, res) => {
 		const product_id = req.params.id;
 		const q = 'DELETE FROM product WHERE product_id = ?';
 
-		await db.query(q, [product_id]);
+		db.query(q, [product_id]);
 
 		res.status(200).json({ message: 'Product deleted successfully!' });
 	} catch (error) {
@@ -224,7 +224,7 @@ const deleteInquiry = async (req, res) => {
 
 		const q = 'DELETE FROM inquiry WHERE inquiry_id = ?';
 
-		await db.query(q, [inquiry_id]);
+		db.query(q, [inquiry_id]);
 		res.status(200).json({ message: 'Inquiry deleted successfully!' });
 	} catch (error) {
 		return res.status(500).json({ message: 'Error deleting inquiry', error: error.message });
