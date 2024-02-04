@@ -171,7 +171,11 @@ const updateProduct = async (req, res) => {
 		const result = db.query(q, values);
 
 		// Return success response
-		if (result) return res.status(200).json({ message: 'Product has been updated successfully!' });
+		if (result.affectedRows > 0) {
+			return res.status(200).json({ message: 'Product has been updated successfully!' });
+		} else {
+			return res.status(404).json({ message: 'Product not found' });
+		}
 	} catch (error) {
 		return res.status(500).json({ message: 'Error updating product', error: error.message });
 	}
