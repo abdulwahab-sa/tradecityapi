@@ -145,40 +145,39 @@ const createInquiry = async (req, res) => {
 // UPDATE CONTROLLERS
 
 const updateProduct = async (req, res) => {
-	try {
-		// Validate request body parameters
-		const product_id = req.params.id;
-		const { product_title, product_article, product_description, subcategory_subcategory_id, category_category_id } = req.body;
+	// Validate request body parameters
+	const product_id = req.params.id;
+	const { product_title, product_article, product_description, subcategory_subcategory_id, category_category_id } = req.body;
 
-		// Get product image from request
-		const product_img = req.files?.['product_img']?.[0]?.buffer;
+	// Get product image from request
+	const product_img = req.files?.['product_img']?.[0]?.buffer;
 
-		// Insert Product into database
+	// Insert Product into database
 
-		const q =
-			'UPDATE product SET `product_title`=?, `product_img`=?, `product_description`=?, `category_category_id`=?, `subcategory_subcategory_id`=? WHERE `product_id`=?';
+	const q =
+		'UPDATE product SET `product_title`=?, `product_img`=?, `product_description`=?, `category_category_id`=?, `subcategory_subcategory_id`=? WHERE `product_id`=?';
 
-		const values = [
-			product_title,
-			product_article,
-			product_img,
-			product_description,
-			subcategory_subcategory_id,
-			category_category_id,
-			product_id,
-		];
+	const values = [
+		product_title,
+		product_article,
+		product_img,
+		product_description,
+		subcategory_subcategory_id,
+		category_category_id,
+		product_id,
+	];
 
-		const result = db.query(q, values);
-
-		// Return success response
-		if (result.affectedRows > 0) {
-			return res.status(200).json({ message: 'Product has been updated successfully!' });
+	db.query(q, values, (err, result) => {
+		if (err) {
+			return res.status(500).json({ message: 'Error updating product', error: err.message });
 		} else {
-			return res.status(404).json({ message: 'Product not found' });
+			if (result.affectedRows > 0) {
+				return res.status(200).json({ message: 'Product has been updated successfully!' });
+			} else {
+				return res.status(404).json({ message: 'Product not found' });
+			}
 		}
-	} catch (error) {
-		return res.status(500).json({ message: 'Error updating product', error: error.message });
-	}
+	});
 };
 
 const updateSubcategory = async (req, res) => {
