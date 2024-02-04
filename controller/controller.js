@@ -154,7 +154,7 @@ const updateProduct = async (req, res) => {
 
 	// Insert Product into database
 
-	const q = `UPDATE product SET product_title=?, product_article=?, product_img=?, product_description=?, category_category_id=?, subcategory_subcategory_id=? WHERE product_id= ?`;
+	const q = `UPDATE product SET product_title=?, product_article=?, product_img=?, product_description=?, category_category_id=?, subcategory_subcategory_id=? WHERE product.product_id= ?`;
 
 	const values = [
 		product_title,
