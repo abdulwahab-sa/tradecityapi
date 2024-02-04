@@ -152,9 +152,6 @@ const updateProduct = async (req, res) => {
 
 		// Get product image from request
 		const product_img = req.files?.['product_img']?.[0]?.buffer;
-		if (!product_img) {
-			throw new Error('No product image found in request');
-		}
 
 		// Insert Product into database
 
