@@ -106,7 +106,7 @@ const createProduct = async (req, res) => {
 		const q =
 			'INSERT INTO product (`product_title`, `product_img`, `product_description`, `category_category_id`, `subcategory_subcategory_id`, `product_article`) VALUES (?, ?, ?, ?, ?, ?);';
 		const values = [product_title, product_img, product_description, category_category_id, subcategory_subcategory_id, product_article];
-		await db.query(q, values);
+		const result = db.query(q, values);
 		/*
 		// Get the inserted product from database
 		const selectQuery = 'SELECT * FROM product WHERE `product_id` = ?';
@@ -114,7 +114,7 @@ const createProduct = async (req, res) => {
 		await db.query(selectQuery, selectValues);
 		*/
 		// Return success response
-		return res.status(201).json({ message: 'Product has been created successfully!' });
+		if (result) return res.status(201).json({ message: 'Product has been created successfully!' });
 	} catch (error) {
 		// Log error and return error response
 		console.error(error);
