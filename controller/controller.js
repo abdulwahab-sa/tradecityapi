@@ -161,8 +161,8 @@ const updateProduct = async (req, res) => {
 		product_article,
 		product_img,
 		product_description,
-		parseInt(subcategory_subcategory_id),
-		parseInt(category_category_id),
+		subcategory_subcategory_id,
+		category_category_id,
 		product_id,
 	];
 
