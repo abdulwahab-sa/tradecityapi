@@ -8,16 +8,16 @@ const upload = multer({ storage });
 const getCategories = (req, res) => {
 	const q = 'SELECT * FROM category';
 	db.query(q, (err, data) => {
-		if (err) return res.json(err);
-		return res.json(data);
+		if (err) return res.status(500).json({ message: 'Error fetching categories', error: err.message });
+		return res.status(200).json(data);
 	});
 };
 
 const getSubcategories = (req, res) => {
 	const q = 'SELECT * FROM subcategory';
 	db.query(q, (err, data) => {
-		if (err) return res.json(err);
-		return res.json(data);
+		if (err) return res.status(500).json({ message: 'Error fetching subcategories', error: err.message });
+		return res.status(200).json(data);
 	});
 };
 
@@ -40,106 +40,90 @@ const getInquiries = (req, res) => {
 // POST CONTROLLERS
 
 const createSubcategory = async (req, res) => {
-	try {
-		// Validate request body parameters
-		const { subcategory_title, category_category_id } = req.body;
-		if (!subcategory_title) {
-			throw new Error('Subcategory title is required');
-		}
-		if (!category_category_id) {
-			throw new Error('Category ID is required');
-		}
-
-		// Get subcategory image from request
-		const subcategory_img = req.files?.['subcategory_img']?.[0]?.buffer;
-		if (!subcategory_img) {
-			throw new Error('No subcategory image found in request');
-		}
-
-		// Insert subcategory into database
-		const q = 'INSERT INTO subcategory (`subcategory_title`, `subcategory_img`, `category_category_id`) VALUES (?, ?, ?);';
-		const values = [subcategory_title, subcategory_img, category_category_id];
-		const result = db.query(q, values);
-
-		// Get the inserted subcategory from database
-		/*
-		const selectQuery = 'SELECT * FROM subcategory WHERE `subcategory_id` = ?';
-		const selectValues = [insertId];
-		const [subcategory] = await db.query(selectQuery, selectValues);
-*/
-		// Return success response
-		if (result) return res.status(201).json({ message: 'Subcategory has been created successfully!' });
-	} catch (error) {
-		// Log error and return error response
-		console.error(error);
-		return res.status(500).json({ message: 'Error creating subcategory', error: error.message });
+	// Validate request body parameters
+	const { subcategory_title, category_category_id } = req.body;
+	const subcategory_img = req.files?.['subcategory_img']?.[0]?.buffer;
+	if (!subcategory_title || subcategory_title === '' || !category_category_id || !subcategory_img) {
+		return res.status(400).json({ message: 'All fields are required' });
 	}
+
+	// Insert subcategory into database
+	const q = 'INSERT INTO subcategory (`subcategory_title`, `subcategory_img`, `category_category_id`) VALUES (?, ?, ?);';
+	const values = [subcategory_title, subcategory_img, category_category_id];
+	db.query(q, values, (err, result) => {
+		if (err) {
+			return res.status(500).json({ message: 'Error creating subcategory', error: err.message });
+		} else {
+			if (result.affectedRows > 0) {
+				return res.status(201).json({ message: 'Subcategory has been created successfully!' });
+			} else {
+				return res.status(404).json({ message: 'Subcategory not found' });
+			}
+		}
+	});
 };
 
 const createProduct = async (req, res) => {
-	try {
-		// Validate request body parameters
-		const { product_title, product_article, product_description, subcategory_subcategory_id, category_category_id } = req.body;
-		console.log(req.body);
-		if (!product_title) {
-			throw new Error('Product title is required');
-		}
-		if (!product_article) {
-			throw new Error('Article is required');
-		}
-
-		if (!subcategory_subcategory_id) {
-			throw new Error('Subcategory ID is required');
-		}
-
-		if (!category_category_id) {
-			throw new Error('Category ID is required');
-		}
-
-		// Get product image from request
-		const product_img = req.files?.['product_img']?.[0]?.buffer;
-		if (!product_img) {
-			throw new Error('No product image found in request');
-		}
-
-		// Insert product into database
-		const q =
-			'INSERT INTO product (`product_title`, `product_img`, `product_description`, `category_category_id`, `subcategory_subcategory_id`, `product_article`) VALUES (?, ?, ?, ?, ?, ?);';
-		const values = [product_title, product_img, product_description, category_category_id, subcategory_subcategory_id, product_article];
-		const result = db.query(q, values);
-		/*
-		// Get the inserted product from database
-		const selectQuery = 'SELECT * FROM product WHERE `product_id` = ?';
-		const selectValues = [insertId];
-		await db.query(selectQuery, selectValues);
-		*/
-		// Return success response
-		if (result) return res.status(201).json({ message: 'Product has been created successfully!' });
-	} catch (error) {
-		// Log error and return error response
-		console.error(error);
-		return res.status(500).json({ message: 'Error creating product', error: error.message });
+	// Validate request body parameters
+	const { product_title, product_article, product_description, subcategory_subcategory_id, category_category_id } = req.body;
+	console.log(req.body);
+	if (!product_title) {
+		throw new Error('Product title is required');
 	}
+	if (!product_article) {
+		throw new Error('Article is required');
+	}
+
+	if (!subcategory_subcategory_id) {
+		throw new Error('Subcategory ID is required');
+	}
+
+	if (!category_category_id) {
+		throw new Error('Category ID is required');
+	}
+
+	// Get product image from request
+	const product_img = req.files?.['product_img']?.[0]?.buffer;
+	if (!product_img) {
+		throw new Error('No product image found in request');
+	}
+
+	// Insert product into database
+	const q =
+		'INSERT INTO product (`product_title`, `product_img`, `product_description`, `category_category_id`, `subcategory_subcategory_id`, `product_article`) VALUES (?, ?, ?, ?, ?, ?);';
+	const values = [product_title, product_img, product_description, category_category_id, subcategory_subcategory_id, product_article];
+	db.query(q, values, (err, result) => {
+		if (err) {
+			return res.status(500).json({ message: 'Error creating product', error: err.message });
+		} else {
+			if (result.affectedRows > 0) {
+				return res.status(201).json({ message: 'Product has been created successfully!' });
+			} else {
+				return res.status(404).json({ message: 'Product not found' });
+			}
+		}
+	});
 };
 
 const createInquiry = async (req, res) => {
-	try {
-		// Validate request body parameters
-		const { inquiry_name, inquiry_email, inquiry_phone, inquiry_req_qty, order_detail } = req.body;
+	// Validate request body parameters
+	const { inquiry_name, inquiry_email, inquiry_phone, inquiry_req_qty, order_detail } = req.body;
 
-		// Insert inquiry into database
-		const q =
-			'INSERT INTO inquiry (`inquiry_name`, `inquiry_email`, `inquiry_phone`, `inquiry_req_qty`, `order_detail`) VALUES (?, ?, ?, ?, ?);';
-		const values = [inquiry_name, inquiry_email, inquiry_phone, inquiry_req_qty, order_detail];
-		const inquiry = db.query(q, values);
-
-		// Return success response
-		if (inquiry) return res.status(201).json({ message: 'Inquiry has been created successfully!' });
-	} catch (error) {
-		// Log error and return error response
-		console.error(error);
-		return res.status(500).json({ message: 'Error creating inquiry', error: error.message });
-	}
+	// Insert inquiry into database
+	const q =
+		'INSERT INTO inquiry (`inquiry_name`, `inquiry_email`, `inquiry_phone`, `inquiry_req_qty`, `order_detail`) VALUES (?, ?, ?, ?, ?);';
+	const values = [inquiry_name, inquiry_email, inquiry_phone, inquiry_req_qty, order_detail];
+	db.query(q, values, (err, result) => {
+		if (err) {
+			return res.status(500).json({ message: 'Error creating inquiry', error: err.message });
+		} else {
+			if (result.affectedRows > 0) {
+				return res.status(201).json({ message: 'Inquiry has been created successfully!' });
+			} else {
+				return res.status(404).json({ message: 'Inquiry not found' });
+			}
+		}
+	});
 };
 
 // UPDATE CONTROLLERS
@@ -246,26 +230,56 @@ const updateProduct = async (req, res) => {
 };
 
 const updateSubcategory = async (req, res) => {
-	try {
-		// Validate request body parameters
-		const subcategory_id = req.params.id;
-		const { subcategory_title, category_category_id } = req.body;
+	// Validate request body parameters
+	const subcategory_id = parseInt(req.params.id);
+	const { subcategory_title, category_category_id } = req.body;
 
-		// Get Subcategory Image from request
-		const subcategory_img = req.files['subcategory_img'][0].buffer;
+	// Get Subcategory Image from request
+	const subcategory_img = req.files['subcategory_img'][0].buffer;
 
-		// Insert Subcategory into database
+	// Insert Subcategory into database
 
-		const q = 'UPDATE subcategory SET `subcategory_title`=?, `subcategory_img`=?,  `category_category_id`=? WHERE `subcategory_id`=?';
+	let q = 'UPDATE subcategory SET ';
+	const values = [];
 
-		const values = [subcategory_title, subcategory_img, category_category_id, subcategory_id];
-		const result = db.query(q, values);
-
-		// Return success response
-		if (result) return res.status(200).json({ message: 'Subcategory has been updated successfully!' });
-	} catch (error) {
-		return res.status(500).json({ message: 'Error updating subcategory', error: error.message });
+	// Construct the SET clause for the update query
+	const setClauses = [];
+	if (subcategory_title) {
+		setClauses.push('subcategory_title=?');
+		values.push(subcategory_title);
 	}
+	if (category_category_id) {
+		setClauses.push('category_category_id=?');
+		values.push(category_category_id);
+	}
+	if (subcategory_img) {
+		setClauses.push('subcategory_img=?');
+		values.push(subcategory_img);
+	}
+
+	// If no fields to update, return with a message
+	if (setClauses.length === 0) {
+		return res.status(400).json({ message: 'No fields to update' });
+	}
+
+	// Add the set clauses to the update query
+	q += setClauses.join(', ');
+
+	// Add the WHERE clause
+	q += ' WHERE subcategory.subcategory_id = ?';
+	values.push(subcategory_id);
+
+	db.query(q, values, (err, result) => {
+		if (err) {
+			return res.status(500).json({ message: 'Error updating subcategory', error: err.message });
+		} else {
+			if (result.affectedRows > 0) {
+				return res.status(200).json({ message: 'Subcategory has been updated successfully!' });
+			} else {
+				return res.status(404).json({ message: 'Subcategory not found' });
+			}
+		}
+	});
 };
 
 // DELETE CONTROLLERS
