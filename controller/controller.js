@@ -235,7 +235,7 @@ const updateSubcategory = async (req, res) => {
 	const { subcategory_title, category_category_id } = req.body;
 
 	// Get Subcategory Image from request
-	const subcategory_img = req.files?.['subcategory_img'][0].buffer;
+	const subcategory_img = req.files?.['subcategory_img']?.[0]?.buffer;
 
 	// Insert Subcategory into database
 
@@ -297,6 +297,33 @@ const deleteProduct = async (req, res) => {
 	}
 };
 
+const deleteSubcategory = async (req, res) => {
+	const subcategory_id = req.params.id;
+	const productQuery = 'DELETE FROM product WHERE subcategory_subcategory_id = ?';
+	const subcategoryQuery = 'DELETE FROM subcategory WHERE subcategory_id = ?';
+
+	// Delete products in the subcategory
+	db.query(productQuery, [subcategory_id], (err, result) => {
+		if (err) {
+			return res.status(500).json({ message: 'Error deleting products', error: err.message });
+		}
+	});
+
+	// Delete the subcategory
+
+	db.query(subcategoryQuery, [subcategory_id], (err, result) => {
+		if (err) {
+			return res.status(500).json({ message: 'Error deleting subcategory', error: err.message });
+		} else {
+			if (result.affectedRows > 0) {
+				return res.status(200).json({ message: 'Subcategory deleted successfully!' });
+			} else {
+				return res.status(404).json({ message: 'Subcategory not found' });
+			}
+		}
+	});
+};
+
 const deleteInquiry = async (req, res) => {
 	try {
 		const inquiry_id = req.params.id;
@@ -322,6 +349,7 @@ module.exports = {
 	updateSubcategory,
 	deleteProduct,
 	deleteInquiry,
+	deleteSubcategory,
 };
 /*
 

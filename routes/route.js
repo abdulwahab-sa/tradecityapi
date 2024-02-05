@@ -11,6 +11,7 @@ const {
 	updateProduct,
 	deleteProduct,
 	deleteInquiry,
+	deleteSubcategory,
 	updateSubcategory,
 } = require('../controller/controller.js');
 const upload = require('./../middleware/multerImage');
@@ -25,7 +26,10 @@ router
 	.get(getSubcategories)
 	.post(upload.fields([{ name: 'subcategory_img', maxCount: 1 }]), createSubcategory);
 
-router.route('/subcategories/:id').put(upload.fields([{ name: 'subcategory_img', maxCount: 1 }]), updateSubcategory);
+router
+	.route('/subcategories/:id')
+	.put(upload.fields([{ name: 'subcategory_img', maxCount: 1 }]), updateSubcategory)
+	.delete(deleteSubcategory);
 
 // Routes for CRUD of Products
 
