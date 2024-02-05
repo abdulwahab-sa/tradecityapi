@@ -235,7 +235,7 @@ const updateSubcategory = async (req, res) => {
 	const { subcategory_title, category_category_id } = req.body;
 
 	// Get Subcategory Image from request
-	const subcategory_img = req.files['subcategory_img'][0].buffer;
+	const subcategory_img = req.files?.['subcategory_img'][0].buffer;
 
 	// Insert Subcategory into database
 
